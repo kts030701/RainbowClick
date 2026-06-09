@@ -1,18 +1,39 @@
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public class GameManager : MonoBehaviour
 {
-    public GameObject red;
-    public GameObject orange;
-    public GameObject yellow;
-    public GameObject green;
-    public GameObject blue;
-    public GameObject navy;
-    public GameObject purple;
+    public Tilemap tilemap;
 
     void Start()
     {
-       
+        for (int i = 0; i < 98; i++)
+        {
+            GetComponent<ObjectPool>().GetAllColor();
+        }
+
+        List<Vector3Int> positions = new List<Vector3Int>();
+
+        for (int x = 0; x < 20; x++)
+        {
+            for (int y = 0; y < 10; y++)
+            {
+                positions.Add(new Vector3Int(x, y, 0));
+            }
+        }
+
+        for (int i = 0; i < positions.Count; i++)
+        {
+            int rand = Random.Range(i, positions.Count);
+            (positions[i], positions[rand]) = (positions[rand], positions[i]);
+        }
+
+        
+        for (int i = 0; i < 98; i++)
+        {
+            GetComponent<ObjectPool>().pool[i].transform.position = positions[i]; 
+        }
     }
 
     void Update()

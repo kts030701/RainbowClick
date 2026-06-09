@@ -1,22 +1,29 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class ObjectPool : MonoBehaviour
 {
     int maxPerColor = 14;
 
-    GameManager gameManager;
+    public GameObject red;
+    public GameObject orange;
+    public GameObject yellow;
+    public GameObject green;
+    public GameObject blue;
+    public GameObject navy;
+    public GameObject purple;
+
+    public List<GameObject> pool = new List<GameObject>();
 
     void Start()
     {
-        gameManager = GetComponent<GameManager>();
-
-        CreateColor(gameManager.red);
-        CreateColor(gameManager.orange);
-        CreateColor(gameManager.yellow);
-        CreateColor(gameManager.green);
-        CreateColor(gameManager.blue);
-        CreateColor(gameManager.navy);
-        CreateColor(gameManager.purple);
+        CreateColor(red);
+        CreateColor(orange);
+        CreateColor(yellow);
+        CreateColor(green);
+        CreateColor(blue);
+        CreateColor(navy);
+        CreateColor(purple);
     }
 
     void CreateColor(GameObject color)
@@ -25,8 +32,25 @@ public class ObjectPool : MonoBehaviour
         {
             GameObject obj = Instantiate(color);
             obj.SetActive(false);
+            pool.Add(obj);
         }
     }
+
+    public GameObject GetAllColor()
+    {
+        foreach (GameObject color in pool)
+        {
+            if (!color.activeSelf)
+            {
+                color.SetActive(true);
+                return color;
+            }
+        }
+
+        return null;
+        
+    }
+
 void Update()
     {
         
