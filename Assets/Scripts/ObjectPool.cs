@@ -5,13 +5,13 @@ public class ObjectPool : MonoBehaviour
 {
     int maxPerColor = 14;
 
-    public GameObject red;
-    public GameObject orange;
-    public GameObject yellow;
-    public GameObject green;
-    public GameObject blue;
-    public GameObject navy;
-    public GameObject purple;
+    public static GameObject red;
+    public static GameObject orange;
+    public static GameObject yellow;
+    public static GameObject green;
+    public static GameObject blue;
+    public static GameObject navy;
+    public static GameObject purple;
 
     public List<GameObject> pool = new List<GameObject>();
 
@@ -53,16 +53,6 @@ public class ObjectPool : MonoBehaviour
 
 void Update()
     {
-        if (Input.GetMouseButtonUp(0))
-        {
-            Vector2 worldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-
-            Collider2D hit = Physics2D.OverlapPoint(worldPos);
-
-            if (hit != null)
-            {
-                hit.gameObject.SetActive(false);
-            }
-        }
+        
     }
 }
