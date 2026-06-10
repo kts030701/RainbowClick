@@ -8,17 +8,9 @@ public class GameManager : MonoBehaviour
     public Tilemap tilemap;
     float time;
     public TextMeshProUGUI timeText;
-    GameObject[] colors =
-            {
-                ObjectPool.red,
-                ObjectPool.orange,
-                ObjectPool.yellow,
-                ObjectPool.green,
-                ObjectPool.blue,
-                ObjectPool.navy,
-                ObjectPool.purple
-            };
+    GameObject[] colors;
     GameObject shouldColor;
+    int shouldColorNumber;
 
     void Start()
     {
@@ -48,6 +40,19 @@ public class GameManager : MonoBehaviour
             GetComponent<ObjectPool>().pool[i].transform.position = positions[i]; 
         }
 
+        ObjectPool pool = GetComponent<ObjectPool>();
+
+        colors = new GameObject[]
+        {
+        pool.red,
+        pool.orange,
+        pool.yellow,
+        pool.green,
+        pool.blue,
+        pool.navy,
+        pool.purple
+        };
+
         shouldColor = colors[0];
     }
 
@@ -64,6 +69,17 @@ public class GameManager : MonoBehaviour
             if (hit.gameObject == shouldColor)
             {
                 hit.gameObject.SetActive(false);
+
+                if (shouldColorNumber < 6)
+                {
+                    shouldColorNumber += 1;
+                }
+                else
+                {
+                    shouldColorNumber = 0;
+                }
+
+                shouldColor = colors[shouldColorNumber];
             }
         }
     }
