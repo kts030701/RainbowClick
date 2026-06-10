@@ -53,6 +53,16 @@ public class ObjectPool : MonoBehaviour
 
 void Update()
     {
-        
+        if (Input.GetMouseButtonUp(0))
+        {
+            Vector2 worldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+            Collider2D hit = Physics2D.OverlapPoint(worldPos);
+
+            if (hit != null)
+            {
+                hit.gameObject.SetActive(false);
+            }
+        }
     }
 }
