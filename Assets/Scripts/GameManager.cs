@@ -65,8 +65,10 @@ public class GameManager : MonoBehaviour
         {
             Vector2 worldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             Collider2D hit = Physics2D.OverlapPoint(worldPos);
+            Debug.Log(hit.gameObject);
+            Debug.Log(shouldColor);
 
-            if (hit.gameObject == shouldColor)
+            if (hit.gameObject.name.Replace("(Clone)", "") == shouldColor.name)
             {
                 hit.gameObject.SetActive(false);
 
@@ -80,6 +82,10 @@ public class GameManager : MonoBehaviour
                 }
 
                 shouldColor = colors[shouldColorNumber];
+            }
+            else
+            {
+                time += 1;
             }
         }
     }
