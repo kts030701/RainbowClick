@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4872744296555253697}
   - component: {fileID: 4130261496944466589}
   - component: {fileID: -2920185202845298004}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Navy_0
   m_TagString: Untagged
   m_Icon: {fileID: 0}

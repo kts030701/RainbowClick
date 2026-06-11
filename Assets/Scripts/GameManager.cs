@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.Tilemaps;
 
 public class GameManager : MonoBehaviour
@@ -11,6 +12,11 @@ public class GameManager : MonoBehaviour
     GameObject[] colors;
     GameObject shouldColor;
     int shouldColorNumber;
+    
+    public AudioSource audioSource;
+    public AudioClip correct1;
+    public AudioClip correct2;
+    public AudioClip wrong;
 
     void Start()
     {
@@ -64,27 +70,37 @@ public class GameManager : MonoBehaviour
         if (Input.GetMouseButtonUp(0))
         {
             Vector2 worldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            Collider2D hit = Physics2D.OverlapPoint(worldPos);
-            Debug.Log(hit.gameObject);
-            Debug.Log(shouldColor);
+            Collider2D colorHit = Physics2D.OverlapPoint(worldPos, LayerMask.GetMask("RainbowTile"));
+            Collider2D tileHit = Physics2D.OverlapPoint(worldPos, LayerMask.GetMask("BG"));
 
-            if (hit.gameObject.name.Replace("(Clone)", "") == shouldColor.name)
+            if (colorHit != null)
             {
-                hit.gameObject.SetActive(false);
-
-                if (shouldColorNumber < 6)
+                if (colorHit.gameObject.name.Replace("(Clone)", "") == shouldColor.name)
                 {
-                    shouldColorNumber += 1;
+                    audioSource.PlayOneShot(correct1);
+
+                    colorHit.gameObject.SetActive(false);
+
+                    if (shouldColorNumber < 6)
+                    {
+                        shouldColorNumber += 1;
+                    }
+                    else
+                    {
+                        shouldColorNumber = 0;
+                    }
+
+                    shouldColor = colors[shouldColorNumber];
                 }
                 else
                 {
-                    shouldColorNumber = 0;
+                    audioSource.PlayOneShot(wrong);
+                    time += 1;
                 }
-
-                shouldColor = colors[shouldColorNumber];
             }
-            else
+            else if (tileHit != null)
             {
+                audioSource.PlayOneShot(wrong);
                 time += 1;
             }
         }
