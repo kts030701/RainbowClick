@@ -2,16 +2,19 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Audio;
+using UnityEngine.SceneManagement;
 using UnityEngine.Tilemaps;
 
 public class GameManager : MonoBehaviour
 {
     public Tilemap tilemap;
-    float time;
+    public static float time;
+    public static float bestTime;
     public TextMeshProUGUI timeText;
     GameObject[] colors;
     GameObject shouldColor;
     int shouldColorNumber;
+    public int colorNumber = 98;
     
     public AudioSource audioSource;
     public AudioClip correct1;
@@ -20,6 +23,8 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
+        time = 0;
+
         for (int i = 0; i < 98; i++)
         {
             GetComponent<ObjectPool>().GetAllColor();
@@ -80,6 +85,21 @@ public class GameManager : MonoBehaviour
                     audioSource.PlayOneShot(correct1);
 
                     colorHit.gameObject.SetActive(false);
+                    colorNumber -= 1;
+
+                    if (colorNumber == 0)
+                    {
+                        if (bestTime == 0)
+                        {
+                            bestTime = time;
+                        }
+                        if (time < bestTime)
+                        {
+                            bestTime = time;
+                        }
+
+                        SceneManager.LoadScene("GameOverScene");
+                    }
 
                     if (shouldColorNumber < 6)
                     {
