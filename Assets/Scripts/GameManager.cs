@@ -15,15 +15,23 @@ public class GameManager : MonoBehaviour
     GameObject shouldColor;
     int shouldColorNumber;
     public int colorNumber = 98;
+    public static bool isBestClear;
+
+    public AudioSource bgm;
+    public AudioSource sfx;
     
-    public AudioSource audioSource;
     public AudioClip correct1;
     public AudioClip correct2;
     public AudioClip wrong;
+    public AudioClip BGM;
 
     void Start()
     {
+        bestTime = PlayerPrefs.GetFloat("Best", 0);
+        bgm.clip = BGM;
+        bgm.Play();
         time = 0;
+        isBestClear = false;
 
         for (int i = 0; i < 98; i++)
         {
@@ -82,7 +90,7 @@ public class GameManager : MonoBehaviour
             {
                 if (colorHit.gameObject.name.Replace("(Clone)", "") == shouldColor.name)
                 {
-                    audioSource.PlayOneShot(correct1);
+                    sfx.PlayOneShot(correct1);
 
                     colorHit.gameObject.SetActive(false);
                     colorNumber -= 1;
@@ -92,13 +100,17 @@ public class GameManager : MonoBehaviour
                         if (bestTime == 0)
                         {
                             bestTime = time;
+                            PlayerPrefs.SetFloat("Best", bestTime);
+                            PlayerPrefs.Save();
                         }
                         if (time < bestTime)
                         {
+                            isBestClear = true;
                             bestTime = time;
+                            PlayerPrefs.SetFloat("Best", bestTime);
+                            PlayerPrefs.Save();
                         }
-
-                        SceneManager.LoadScene("GameOverScene");
+                        SceneManager.LoadScene("ClearScene");
                     }
 
                     if (shouldColorNumber < 6)
@@ -114,15 +126,20 @@ public class GameManager : MonoBehaviour
                 }
                 else
                 {
-                    audioSource.PlayOneShot(wrong);
+                    sfx.PlayOneShot(wrong);
                     time += 1;
                 }
             }
             else if (tileHit != null)
             {
-                audioSource.PlayOneShot(wrong);
+                sfx.PlayOneShot(wrong);
                 time += 1;
             }
         }
+    }
+
+    public void Reset()
+    {
+        SceneManager.LoadScene("MainMenuScene");
     }
 }
