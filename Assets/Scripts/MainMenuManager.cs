@@ -13,10 +13,14 @@ public class MainMenuManager : MonoBehaviour
         Application.Quit();
     }
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    void Awake()
+    {
+        DontDestroyOnLoad(gameObject);
+    }
+
     void Start()
     {
-
+        Screen.SetResolution(1920, 1080, FullScreenMode.Windowed);
     }
 
     // Update is called once per frame
